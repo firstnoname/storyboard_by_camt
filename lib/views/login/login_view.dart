@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storyboard_camt/main_view.dart';
+import 'package:storyboard_camt/views/views.dart';
 
 import 'bloc/login_bloc.dart';
 
@@ -76,7 +77,7 @@ class LoginView extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MainView(),
+                    builder: (context) => ProjectListView(),
                   ));
               // if (!_formGK.currentState!.validate()) {
               //   return;

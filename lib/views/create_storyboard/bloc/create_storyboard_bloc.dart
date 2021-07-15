@@ -17,12 +17,12 @@ class CreateStoryboardBloc
     this.add(StoryboardInitial());
   }
 
-  late StoryboardModel _storyboardInfo;
+  StoryboardModel? _storyboardInfo = StoryboardModel(storyList: []);
   get storyboardInfo => _storyboardInfo;
 
-  late List<StoryDetail> _storyDetailList;
-
-  get storyDetailList => _storyDetailList;
+  var textTimeControllers = <TextEditingController>[];
+  var textVdoControllers = <TextEditingController>[];
+  var textSoundControllers = <TextEditingController>[];
 
   @override
   Stream<CreateStoryboardState> mapEventToState(
@@ -30,13 +30,21 @@ class CreateStoryboardBloc
   ) async* {
     switch (event.runtimeType) {
       case StoryboardInitial:
+        // if add new storyboard
+        _storyboardInfo = StoryboardModel(storyList: []);
+        // if edit existing project
+
         yield CreateStoryboardInitial();
         break;
       case StoryboardFormSubmitted:
+        Navigator.pop(context);
         yield CreateStoryboardSubmitSuccess();
         break;
       case StoryboardItemAdded:
-        _storyboardInfo.storyList.add(StoryDetail('', '', '', '', '', ''));
+        textTimeControllers.add(TextEditingController());
+        textVdoControllers.add(TextEditingController());
+        textSoundControllers.add(TextEditingController());
+        _storyboardInfo!.storyList!.add(StoryDetail('', '', '', '', '', ''));
         yield CreateStorybaordAddItemSuccess();
         break;
     }
