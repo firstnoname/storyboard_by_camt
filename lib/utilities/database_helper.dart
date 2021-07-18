@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:storyboard_camt/models/story_detail.dart';
 import 'package:storyboard_camt/models/storyboard.dart';
 
 class DatabaseHelper {
@@ -12,25 +13,28 @@ class DatabaseHelper {
   static final storyboardTable = 'storyboard_tbl';
 
   // Store
-  static final storyboardId = '_id';
+  static final storyboardId = 'id';
   static final projectName = 'project_name';
   static final createDate = 'create_date';
 
   // Store storyboard detail list.
   static final sbDetailTable = 'storyboard_detail_table';
-  static final sbDetailId = '_id';
-  static final sbImagePath = 'sb_image_path';
-  static final sbDuration = 'sb_duration';
-  static final sbDescription = 'sb_description';
-  static final sbSound = 'sb_sound';
-  static final sbSoundDuration = 'sb_sound_duration';
-  static final sbPlace = 'sb_place';
+  static final sbDetailId = 'id';
+  static final sbImagePath = 'image_path';
+  static final sbDuration = 'duration';
+  static final sbVdoName = 'vdo_name';
+  static final sbDescription = 'description';
+  static final sbSound = 'sound';
+  static final sbSoundDuration = 'sound_duration';
+  static final sbPlace = 'place';
+
+  static final sbForeignKey = 'storyboard_id';
 
   // Store user info.
   static final userTable = 'user';
-  static final userId = '_id';
-  static final userName = 'user_name';
-  static final userLastname = 'user_lastname';
+  static final userId = 'id';
+  static final userName = 'firstname';
+  static final userLastname = 'lastname';
 
   DatabaseHelper._privateConstructor();
 
@@ -69,12 +73,14 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $sbDetailTable (
         $sbDetailId INTEGER PRIMARY KEY,
-        $sbImagePath TEXT NOT NULL;
-        $sbDuration TEXT NOT NULL;
-        $sbDescription TEXT NOT NULL;
-        $sbSound TEXT NOT NULL;
-        $sbSoundDuration TEXT NOT NULL;
-        $sbPlace TEXT NOT NULL;
+        $sbImagePath TEXT NOT NULL,
+        $sbDuration TEXT NOT NULL,
+        $sbVdoName TEXT NOT NULL,
+        $sbDescription TEXT NOT NULL,
+        $sbSound TEXT NOT NULL,
+        $sbSoundDuration TEXT NOT NULL,
+        $sbPlace TEXT NOT NULL,
+        $sbForeignKey INTEGER NOT NULL
       )
       ''');
 
@@ -83,33 +89,55 @@ class DatabaseHelper {
       CREATE TABLE $userTable (
         $userId INTEGER PRIMARY KEY,
         $userName TEXT NOT NULL,
-        $userLastname TEXT NOT NULL;
+        $userLastname TEXT NOT NULL
       )
       ''');
   }
 
   Future<int?> insertStoryboard(StoryboardModel storyboardInfo) async {
     Database? db = await instance.database;
-
+    // insert storyboard table and got the id and use it as foreign key
+    // for detail table.
+    var result = await db!.insert(storyboardTable, storyboardInfo.toMap());
     storyboardInfo.storyList!.forEach((element) async {
-      await db!.insert(sbDetailTable, element.toMap());
+      element.storyboardId = result.toString();
+      await db.insert(sbDetailTable, element.toMap());
     });
 
-    return await db!.insert(storyboardTable, storyboardInfo.toMap());
+    return result;
   }
 
   Future<List<StoryboardModel>> getStoryboardInfo() async {
     Database? db = (await instance.database);
     final List<Map<String, dynamic>> maps = await db!.query(storyboardTable);
 
-    return List.generate(maps.length, (i) {
+    var storyboardProjects = List.generate(maps.length, (i) {
       return StoryboardModel(
-        id: maps[i]['_id'],
-        createDate: maps[i]['createDate'],
+        id: maps[i]['id'].toString(),
+        createDate: DateTime.parse(maps[i]['create_date']),
         author: maps[i]['author'],
-        projectName: maps[i]['projectName'],
-        storyList: maps[i]['storyList'],
+        projectName: maps[i]['project_name'],
       );
+    });
+
+    return storyboardProjects;
+  }
+
+  Future<List<StoryDetail>> getStoryDetailById(String id) async {
+    Database? db = (await instance.database);
+    final List<Map<String, dynamic>> maps = await db!.query(sbDetailTable);
+
+    return List.generate(maps.length, (i) => StoryDetail.fromMap(maps[i]));
+  }
+
+  // Delete storyboard and story detail table by storyboard_id and foreign key.
+  Future<void> deleteStoryboard(List<StoryboardModel> storyboardList) async {
+    final db = await instance.database;
+    storyboardList.forEach((element) async {
+      await db!.delete(storyboardTable,
+          where: '$storyboardId = ?', whereArgs: [element.id]);
+      await db.delete(sbDetailTable,
+          where: '$sbForeignKey = ?', whereArgs: [element.id]);
     });
   }
 }

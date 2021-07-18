@@ -18,17 +18,12 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return SafeArea(
       top: false,
       bottom: false,
       child: BlocProvider<CreateStoryboardBloc>(
         create: (_) => CreateStoryboardBloc(context),
         child: BlocBuilder<CreateStoryboardBloc, CreateStoryboardState>(
-          // buildWhen: (previous, current) {
-
-          // },
           builder: (context, state) {
             StoryboardModel _items =
                 context.read<CreateStoryboardBloc>().storyboardInfo;
@@ -47,22 +42,21 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(),
+                            child: TextFormField(
+                              onChanged: (value) => _items.projectName = value,
+                            ),
                           ),
                           Expanded(
                             child: ListView.builder(
                               itemCount: _items.storyList!.length,
                               itemBuilder: (context, index) => CardStoryList(
+                                  context
+                                      .read<CreateStoryboardBloc>()
+                                      .storyboardInfo,
                                   index,
                                   context
                                       .read<CreateStoryboardBloc>()
-                                      .textTimeControllers[index],
-                                  context
-                                      .read<CreateStoryboardBloc>()
-                                      .textVdoControllers[index],
-                                  context
-                                      .read<CreateStoryboardBloc>()
-                                      .textSoundControllers[index]),
+                                      .imagePaths),
                             ),
                           ),
                         ],

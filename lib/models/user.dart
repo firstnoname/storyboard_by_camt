@@ -6,7 +6,7 @@ class User extends BaseObject {
   String? firstName;
   String? lastName;
 
-  User(this.firstName, this.lastName, String id, Log log)
+  User({this.firstName, this.lastName, String? id, Log? log})
       : super(id: id, log: log);
 
   User.fromMap(dynamic map)

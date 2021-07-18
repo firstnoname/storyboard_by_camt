@@ -20,21 +20,21 @@ class StoryboardModel extends BaseObject {
       : super(id: id, log: log);
 
   Map<String, dynamic> toMap() {
-    var map;
-    if (projectName != null) map['projectName'] = projectName;
-    if (createDate != null) map['createDate'] = createDate;
+    var map = <String, dynamic>{};
+    if (projectName != null) map['project_name'] = projectName;
+    if (createDate != null) map['create_date'] = createDate.toString();
     if (author != null) map['author'] = author!.toMap();
     return map;
   }
 
   StoryboardModel.fromMap(dynamic map)
-      : projectName = map['projectName'],
-        createDate = map['createDate'],
+      : projectName = map['project_name'],
+        createDate = DateTime(map['create_date']),
         author = map['author'],
         storyList = [],
         super.fromMap(map) {
-    if (map['storyList'] != null)
-      map['storyList'].forEach((v) {
+    if (map['story_list'] != null)
+      map['story_list'].forEach((v) {
         storyList!.add(StoryDetail.fromMap(v));
       });
   }

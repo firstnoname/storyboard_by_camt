@@ -21,7 +21,7 @@ class _ImageSelectionState extends State<ImageSelection> {
         await _picker.getImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
-      _image = image!.path as File;
+      _image = File(image!.path);
     });
   }
 
@@ -31,7 +31,7 @@ class _ImageSelectionState extends State<ImageSelection> {
     print('image from gallery -> ${image!.path}');
 
     setState(() {
-      _image = image.path as File;
+      _image = File(image.path);
     });
   }
 

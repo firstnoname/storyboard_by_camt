@@ -1,20 +1,38 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:storyboard_camt/models/storyboard.dart';
 import 'package:storyboard_camt/widgets/widgets.dart';
 
 class CardStoryList extends StatelessWidget {
-  final TextEditingController textTimeController;
-  final TextEditingController textVdoController;
-  final TextEditingController textSoundController;
+  final List<File> imagePath;
   final int index;
-  CardStoryList(this.index, this.textTimeController, this.textVdoController,
-      this.textSoundController,
-      {Key? key})
-      : super(key: key);
+  final StoryboardModel storyboardInfo;
+
+  CardStoryList(
+    this.storyboardInfo,
+    this.index,
+    this.imagePath, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var durationController =
+        TextEditingController(text: storyboardInfo.storyList![index].duration);
+    var descController = TextEditingController(
+        text: storyboardInfo.storyList![index].description);
+    var vdoController =
+        TextEditingController(text: storyboardInfo.storyList![index].vdoName);
+    var soundController = TextEditingController(
+        text: storyboardInfo.storyList![index].soundDuration);
+    var soundSourceController = TextEditingController(
+        text: storyboardInfo.storyList![index].soundSource);
+    var placeController =
+        TextEditingController(text: storyboardInfo.storyList![index].place);
+
     return Container(
-      height: MediaQuery.of(context).size.height / 3.5,
+      height: MediaQuery.of(context).size.height / 2.5,
       child: Card(
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -24,7 +42,10 @@ class CardStoryList extends StatelessWidget {
               child: Stack(
                 children: [
                   ImageSelection(
-                    onImageSelected: (file) {},
+                    onImageSelected: (file) {
+                      storyboardInfo.storyList![index].imagePath = file.path;
+                      imagePath[index] = file;
+                    },
                   ),
                   Positioned(
                     top: 4,
@@ -37,25 +58,54 @@ class CardStoryList extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Container(
-                color: Colors.blueGrey,
+                color: Colors.blueGrey.shade100,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       TextFormField(
-                        controller: this.textTimeController,
+                        controller: durationController,
+                        decoration: InputDecoration(hintText: 'วินาทีในฉาก'),
+                        onChanged: (value) =>
+                            storyboardInfo.storyList![index].duration = value,
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
-                        controller: this.textVdoController,
+                        controller: descController,
+                        decoration: InputDecoration(hintText: 'คำอธิบาย'),
+                        onChanged: (value) => storyboardInfo
+                            .storyList![index].description = value,
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
-                        controller: this.textSoundController,
+                        controller: vdoController,
+                        decoration: InputDecoration(hintText: 'ภาพเคลื่อนไหว'),
+                        onChanged: (value) =>
+                            storyboardInfo.storyList![index].vdoName = value,
                       ),
                       const SizedBox(width: 8),
-                      TextFormField(),
+                      TextFormField(
+                        controller: soundController,
+                        decoration: InputDecoration(hintText: 'ชื่อไฟล์เสียง'),
+                        onChanged: (value) => storyboardInfo
+                            .storyList![index].soundSource = value,
+                      ),
+                      const SizedBox(width: 8),
+                      TextFormField(
+                        controller: soundSourceController,
+                        decoration:
+                            InputDecoration(hintText: 'ช่วงเวลาในไฟล์เสียง'),
+                        onChanged: (value) => storyboardInfo
+                            .storyList![index].soundDuration = value,
+                      ),
+                      const SizedBox(width: 8),
+                      TextFormField(
+                        controller: placeController,
+                        decoration: InputDecoration(hintText: 'สถานที่'),
+                        onChanged: (value) =>
+                            storyboardInfo.storyList![index].place = value,
+                      ),
                       const SizedBox(width: 8),
                     ],
                   ),
