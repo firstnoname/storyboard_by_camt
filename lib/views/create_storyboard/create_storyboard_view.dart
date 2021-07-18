@@ -71,7 +71,7 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                       ? Positioned(
                           bottom: 24,
                           child: RaisedButton(
-                            child: Text('Submit'),
+                            child: Text('Save'),
                             onPressed: () => context
                                 .read<CreateStoryboardBloc>()
                                 .add(StoryboardFormSubmitted()),

@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:storyboard_camt/models/story_detail.dart';
 import 'package:storyboard_camt/models/storyboard.dart';
+import 'package:uuid/uuid.dart';
 
 class DatabaseHelper {
   static final _databaseName = 'storyboard.db';
@@ -63,7 +64,7 @@ class DatabaseHelper {
     // create storyboard table.
     await db.execute('''
       CREATE TABLE $storyboardTable (
-        $storyboardId INTEGER PRIMARY KEY,
+        $storyboardId TEXT PRIMARY KEY,
         $projectName TEXT NOT NULL,
         $createDate TEXT NOT NULL
       )
@@ -80,7 +81,7 @@ class DatabaseHelper {
         $sbSound TEXT NOT NULL,
         $sbSoundDuration TEXT NOT NULL,
         $sbPlace TEXT NOT NULL,
-        $sbForeignKey INTEGER NOT NULL
+        $sbForeignKey TEXT NOT NULL
       )
       ''');
 
@@ -94,17 +95,22 @@ class DatabaseHelper {
       ''');
   }
 
-  Future<int?> insertStoryboard(StoryboardModel storyboardInfo) async {
+  Future<bool> insertStoryboard(StoryboardModel storyboardInfo) async {
+    var _isSuccess = false;
     Database? db = await instance.database;
     // insert storyboard table and got the id and use it as foreign key
     // for detail table.
-    var result = await db!.insert(storyboardTable, storyboardInfo.toMap());
+    var uuid = Uuid().v1();
+    var result = await db!
+        .insert(storyboardTable, storyboardInfo.toMap()..addAll({'id': uuid}));
     storyboardInfo.storyList!.forEach((element) async {
-      element.storyboardId = result.toString();
+      element.storyboardId = uuid;
       await db.insert(sbDetailTable, element.toMap());
     });
 
-    return result;
+    if (result.isOdd) _isSuccess = true;
+
+    return _isSuccess;
   }
 
   Future<List<StoryboardModel>> getStoryboardInfo() async {

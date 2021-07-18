@@ -6,3 +6,7 @@ abstract class ProjectDetailState {}
 class ProjectDetailInitState extends ProjectDetailState {}
 
 class GetDetailsSuccess extends ProjectDetailState {}
+
+class AddStoryDetailSuccess extends ProjectDetailState {}
+
+class SaveStoryboardSuccess extends ProjectDetailState {}

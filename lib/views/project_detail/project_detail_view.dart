@@ -14,7 +14,7 @@ class ProjectDetailView extends StatelessWidget {
     var projectNameController;
 
     return BlocProvider<ProjectDetailBloc>(
-      create: (_) => ProjectDetailBloc(context, storyboardInfo.id!),
+      create: (_) => ProjectDetailBloc(context, storyboardInfo),
       child: BlocBuilder<ProjectDetailBloc, ProjectDetailState>(
         builder: (context, state) {
           storyboardInfo.storyList =
@@ -59,7 +59,7 @@ class ProjectDetailView extends StatelessWidget {
                 Positioned(
                   bottom: 24,
                   child: RaisedButton(
-                    child: Text('Submit'),
+                    child: Text('Save'),
                     onPressed: () {},
                   ),
                 ),
@@ -67,7 +67,8 @@ class ProjectDetailView extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () =>
+                  context.read<ProjectDetailBloc>().add(AddedStoryDetail()),
             ),
           );
         },

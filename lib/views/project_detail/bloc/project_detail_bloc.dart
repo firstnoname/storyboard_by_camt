@@ -13,8 +13,9 @@ part 'project_detail_state.dart';
 class ProjectDetailBloc
     extends BaseBloc<ProjectDetailEvent, ProjectDetailState> {
   BuildContext context;
-  String id;
-  ProjectDetailBloc(this.context, this.id, {ProjectDetailState? initialState})
+  StoryboardModel _storyboardInfo;
+  ProjectDetailBloc(this.context, this._storyboardInfo,
+      {ProjectDetailState? initialState})
       : super(context, initialState ?? ProjectDetailInitState()) {
     this.add(ProjectDetailInitial());
   }
@@ -28,8 +29,14 @@ class ProjectDetailBloc
   ) async* {
     if (event is ProjectDetailInitial) {
       // get story detial from received id.
-      storyDetails = await DatabaseHelper.instance.getStoryDetailById(id);
+      storyDetails =
+          await DatabaseHelper.instance.getStoryDetailById(_storyboardInfo.id!);
       yield GetDetailsSuccess();
+    } else if (event is AddedStoryDetail) {
+      _storyboardInfo.storyList!.add(StoryDetail());
+      yield AddStoryDetailSuccess();
+    } else if (event is SavedStoryboard) {
+      yield SaveStoryboardSuccess();
     } else {}
   }
 }

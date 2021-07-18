@@ -52,8 +52,12 @@ class CreateStoryboardBloc
         var isSuccess =
             DatabaseHelper.instance.insertStoryboard(storyboardInfo);
 
-        Navigator.pop(context);
-        yield CreateStoryboardSubmitSuccess();
+        if (isSuccess == true) {
+          Navigator.pop(context);
+          yield CreateStoryboardSubmitSuccess();
+        } else
+          yield CreateStoryboardFailure();
+
         break;
       case StoryboardItemAdded:
         textTimeControllers.add(TextEditingController());

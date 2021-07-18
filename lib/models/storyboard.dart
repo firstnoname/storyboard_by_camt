@@ -4,6 +4,7 @@ import 'package:storyboard_camt/models/user.dart';
 import 'models.dart';
 
 class StoryboardModel extends BaseObject {
+  String? id;
   String? projectName;
   DateTime? createDate;
   User? author;
@@ -15,12 +16,13 @@ class StoryboardModel extends BaseObject {
       this.createDate,
       this.author,
       this.storyList,
-      String? id,
+      this.id,
       Log? log})
       : super(id: id, log: log);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
+    if (id != null) map['id'] = id;
     if (projectName != null) map['project_name'] = projectName;
     if (createDate != null) map['create_date'] = createDate.toString();
     if (author != null) map['author'] = author!.toMap();
@@ -28,7 +30,8 @@ class StoryboardModel extends BaseObject {
   }
 
   StoryboardModel.fromMap(dynamic map)
-      : projectName = map['project_name'],
+      : id = map['id'],
+        projectName = map['project_name'],
         createDate = DateTime(map['create_date']),
         author = map['author'],
         storyList = [],
