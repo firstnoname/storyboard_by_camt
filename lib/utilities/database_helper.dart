@@ -108,7 +108,7 @@ class DatabaseHelper {
       await db.insert(sbDetailTable, element.toMap());
     });
 
-    if (result.isOdd) _isSuccess = true;
+    if (result != 0) _isSuccess = true;
 
     return _isSuccess;
   }
@@ -118,6 +118,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db!.query(storyboardTable);
 
     var storyboardProjects = List.generate(maps.length, (i) {
+      print('storyboard id [$i] -> ${maps[i]['id']}');
       return StoryboardModel(
         id: maps[i]['id'].toString(),
         createDate: DateTime.parse(maps[i]['create_date']),
@@ -131,8 +132,11 @@ class DatabaseHelper {
 
   Future<List<StoryDetail>> getStoryDetailById(String id) async {
     Database? db = (await instance.database);
-    final List<Map<String, dynamic>> maps = await db!.query(sbDetailTable);
-
+    final List<Map<String, dynamic>> maps = await db!
+        .query(sbDetailTable, where: '$sbForeignKey = ?', whereArgs: [id]);
+    maps.forEach((element) {
+      print('storyboard id -> ${element[sbForeignKey]}');
+    });
     return List.generate(maps.length, (i) => StoryDetail.fromMap(maps[i]));
   }
 

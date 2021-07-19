@@ -31,9 +31,8 @@ class CardStoryList extends StatelessWidget {
     var placeController =
         TextEditingController(text: storyboardInfo.storyList![index].place);
 
-    return Container(
-      height: MediaQuery.of(context).size.height / 2.5,
-      child: Card(
+    return Card(
+      child: IntrinsicHeight(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

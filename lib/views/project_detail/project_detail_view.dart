@@ -6,8 +6,13 @@ import 'package:storyboard_camt/widgets/widgets.dart';
 
 class ProjectDetailView extends StatelessWidget {
   final StoryboardModel storyboardInfo;
+  final void Function() onSubmitted;
 
-  ProjectDetailView(this.storyboardInfo, {Key? key}) : super(key: key);
+  ProjectDetailView(
+    this.storyboardInfo,
+    this.onSubmitted, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

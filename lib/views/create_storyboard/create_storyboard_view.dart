@@ -6,7 +6,8 @@ import 'package:storyboard_camt/views/create_storyboard/bloc/create_storyboard_b
 import 'package:storyboard_camt/widgets/widgets.dart';
 
 class CreateStoryboardView extends StatefulWidget {
-  CreateStoryboardView({Key? key}) : super(key: key);
+  final void Function() onSubmitted;
+  CreateStoryboardView(this.onSubmitted, {Key? key}) : super(key: key);
 
   @override
   _CreateStoryboardViewState createState() => _CreateStoryboardViewState();
@@ -74,7 +75,8 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                             child: Text('Save'),
                             onPressed: () => context
                                 .read<CreateStoryboardBloc>()
-                                .add(StoryboardFormSubmitted()),
+                                .add(StoryboardFormSubmitted(
+                                    widget.onSubmitted)),
                           ),
                         )
                       : Container()

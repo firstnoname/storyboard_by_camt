@@ -46,8 +46,12 @@ class _ProjectListViewState extends State<ProjectListView> {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ProjectDetailView(storyboardsInfo[index]),
+                              builder: (_) =>
+                                  ProjectDetailView(storyboardsInfo[index], () {
+                                context
+                                    .read<ProjectListBloc>()
+                                    .add(ProjectListInitial());
+                              }),
                             )),
                         child: ListTile(
                           title: Text(
@@ -79,10 +83,14 @@ class _ProjectListViewState extends State<ProjectListView> {
                         color: Colors.green,
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CreateStoryboardView(),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => CreateStoryboardView(() {
+                                      context
+                                          .read<ProjectListBloc>()
+                                          .add(ProjectListInitial());
+                                    })),
+                          );
                           setState(() {
                             _color = Colors.green;
                             _colorName = 'Green';

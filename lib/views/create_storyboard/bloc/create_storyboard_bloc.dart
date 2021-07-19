@@ -38,37 +38,33 @@ class CreateStoryboardBloc
   Stream<CreateStoryboardState> mapEventToState(
     CreateStoryboardEvent event,
   ) async* {
-    switch (event.runtimeType) {
-      case StoryboardInitial:
-        // if add new storyboard
-        _storyboardInfo = StoryboardModel(storyList: []);
-        // if edit existing project
+    if (event is StoryboardInitial) {
+      // if add new storyboard
+      _storyboardInfo = StoryboardModel(storyList: []);
+      // if edit existing project
 
-        yield CreateStoryboardInitial();
-        break;
-      case StoryboardFormSubmitted:
-        // insert into database.
-        _storyboardInfo!.createDate = DateTime.now();
-        var isSuccess =
-            DatabaseHelper.instance.insertStoryboard(storyboardInfo);
+      yield CreateStoryboardInitial();
+    } else if (event is StoryboardFormSubmitted) {
+      // insert into database.
+      _storyboardInfo!.createDate = DateTime.now();
+      var isSuccess =
+          await DatabaseHelper.instance.insertStoryboard(storyboardInfo);
 
-        if (isSuccess == true) {
-          Navigator.pop(context);
-          yield CreateStoryboardSubmitSuccess();
-        } else
-          yield CreateStoryboardFailure();
-
-        break;
-      case StoryboardItemAdded:
-        textTimeControllers.add(TextEditingController());
-        textDescriptionControllers.add(TextEditingController());
-        textVdoControllers.add(TextEditingController());
-        textSoundControllers.add(TextEditingController());
-        textSoundDurationControllers.add(TextEditingController());
-        textPlaceControllers.add(TextEditingController());
-        _storyboardInfo!.storyList!.add(StoryDetail());
-        yield CreateStorybaordAddItemSuccess();
-        break;
+      if (isSuccess == true) {
+        event.onSubmitted();
+        Navigator.pop(context);
+        yield CreateStoryboardSubmitSuccess();
+      } else
+        yield CreateStoryboardFailure();
+    } else if (event is StoryboardItemAdded) {
+      textTimeControllers.add(TextEditingController());
+      textDescriptionControllers.add(TextEditingController());
+      textVdoControllers.add(TextEditingController());
+      textSoundControllers.add(TextEditingController());
+      textSoundDurationControllers.add(TextEditingController());
+      textPlaceControllers.add(TextEditingController());
+      _storyboardInfo!.storyList!.add(StoryDetail());
+      yield CreateStorybaordAddItemSuccess();
     }
   }
 }
