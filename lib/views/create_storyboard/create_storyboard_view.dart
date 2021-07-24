@@ -19,6 +19,7 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return SafeArea(
       top: false,
       bottom: false,
@@ -69,24 +70,30 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                               .textTimeControllers
                               .length >
                           0
-                      ? Positioned(
-                          bottom: 24,
-                          child: RaisedButton(
-                            child: Text('Save'),
-                            onPressed: () => context
-                                .read<CreateStoryboardBloc>()
-                                .add(StoryboardFormSubmitted(
-                                    widget.onSubmitted)),
+                      ? Visibility(
+                          visible: !keyboardIsOpen,
+                          child: Positioned(
+                            bottom: 24,
+                            child: RaisedButton(
+                              child: Text('Save'),
+                              onPressed: () => context
+                                  .read<CreateStoryboardBloc>()
+                                  .add(StoryboardFormSubmitted(
+                                      widget.onSubmitted)),
+                            ),
                           ),
                         )
                       : Container()
                 ],
               ),
-              floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () => context
-                    .read<CreateStoryboardBloc>()
-                    .add(StoryboardItemAdded()),
+              floatingActionButton: Visibility(
+                visible: !keyboardIsOpen,
+                child: FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () => context
+                      .read<CreateStoryboardBloc>()
+                      .add(StoryboardItemAdded()),
+                ),
               ),
             );
           },

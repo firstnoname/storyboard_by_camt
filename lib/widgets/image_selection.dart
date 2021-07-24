@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageSelection extends StatefulWidget {
+  final String? currentImage;
   final void Function(File)? onImageSelected;
 
-  const ImageSelection({Key? key, this.onImageSelected}) : super(key: key);
+  const ImageSelection({Key? key, this.onImageSelected, this.currentImage})
+      : super(key: key);
 
   @override
   _ImageSelectionState createState() => _ImageSelectionState();
@@ -14,6 +16,7 @@ class ImageSelection extends StatefulWidget {
 
 class _ImageSelectionState extends State<ImageSelection> {
   final _picker = ImagePicker();
+
   File? _image;
 
   _imgFromCamera() async {
@@ -22,6 +25,7 @@ class _ImageSelectionState extends State<ImageSelection> {
 
     setState(() {
       _image = File(image!.path);
+      widget.onImageSelected!(_image!);
     });
   }
 
@@ -32,6 +36,7 @@ class _ImageSelectionState extends State<ImageSelection> {
 
     setState(() {
       _image = File(image.path);
+      widget.onImageSelected!(_image!);
     });
   }
 
@@ -67,9 +72,23 @@ class _ImageSelectionState extends State<ImageSelection> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.currentImage != null) {
+      _image = File(widget.currentImage!);
+    } else if (_image != null) {
+    } else
+      _image = null;
+
     return Stack(
       children: [
-        _image != null ? Image.file(_image!) : Container(),
+        _image != null
+            ? Container(
+                height: double.infinity,
+                child: Image.file(
+                  _image!,
+                  fit: BoxFit.contain,
+                ),
+              )
+            : Container(),
         Container(
           child: Center(
             child: IconButton(

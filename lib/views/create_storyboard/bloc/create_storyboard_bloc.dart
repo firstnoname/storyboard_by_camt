@@ -30,7 +30,7 @@ class CreateStoryboardBloc
   var textSoundControllers = <TextEditingController>[];
   var textSoundDurationControllers = <TextEditingController>[];
   var textPlaceControllers = <TextEditingController>[];
-  var imagePaths = <File>[];
+  var imagePaths = <File?>[];
 
   var storyDetailList = <StoryDetail>[];
 
@@ -47,8 +47,8 @@ class CreateStoryboardBloc
     } else if (event is StoryboardFormSubmitted) {
       // insert into database.
       _storyboardInfo!.createDate = DateTime.now();
-      var isSuccess =
-          await DatabaseHelper.instance.insertStoryboard(storyboardInfo);
+      var isSuccess = await DatabaseHelper.instance
+          .insertStoryboard(storyboardInfo, imagePaths);
 
       if (isSuccess == true) {
         event.onSubmitted();
@@ -64,6 +64,7 @@ class CreateStoryboardBloc
       textSoundDurationControllers.add(TextEditingController());
       textPlaceControllers.add(TextEditingController());
       _storyboardInfo!.storyList!.add(StoryDetail());
+      imagePaths.add(null);
       yield CreateStorybaordAddItemSuccess();
     }
   }

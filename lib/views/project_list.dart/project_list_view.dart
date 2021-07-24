@@ -1,6 +1,7 @@
 import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:storyboard_camt/utilities/database_helper.dart';
 import 'package:storyboard_camt/views/project_detail/project_detail_view.dart';
 import 'package:storyboard_camt/views/project_list.dart/bloc/project_list_bloc.dart';
@@ -60,7 +61,7 @@ class _ProjectListViewState extends State<ProjectListView> {
                           ),
                           leading: Icon(Icons.ac_unit),
                           trailing: Text(
-                              '${storyboardsInfo[index].createDate!.toIso8601String()}'),
+                              '${DateFormat('dd-MM-yyyy').format(storyboardsInfo[index].createDate!)}'),
                         ),
                       ),
                     ),
@@ -97,7 +98,7 @@ class _ProjectListViewState extends State<ProjectListView> {
                           });
                         }),
                     CircularMenuItem(
-                        icon: Icons.settings,
+                        icon: Icons.delete,
                         color: Colors.red,
                         onTap: () {
                           DatabaseHelper.instance

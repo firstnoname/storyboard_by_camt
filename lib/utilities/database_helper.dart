@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:storyboard_camt/models/story_detail.dart';
 import 'package:storyboard_camt/models/storyboard.dart';
+import 'package:storyboard_camt/utilities/file_manager.dart';
 import 'package:uuid/uuid.dart';
 
 class DatabaseHelper {
@@ -95,18 +96,39 @@ class DatabaseHelper {
       ''');
   }
 
-  Future<bool> insertStoryboard(StoryboardModel storyboardInfo) async {
+  Future<bool> insertStoryboard(
+      StoryboardModel storyboardInfo, List<File?> images) async {
     var _isSuccess = false;
+    String saveImage = '';
     Database? db = await instance.database;
     // insert storyboard table and got the id and use it as foreign key
     // for detail table.
     var uuid = Uuid().v1();
     var result = await db!
         .insert(storyboardTable, storyboardInfo.toMap()..addAll({'id': uuid}));
-    storyboardInfo.storyList!.forEach((element) async {
-      element.storyboardId = uuid;
-      await db.insert(sbDetailTable, element.toMap());
-    });
+    for (var i = 0; i < storyboardInfo.storyList!.length; i++) {
+      storyboardInfo.storyList![i].storyboardId = uuid;
+      var storyDetailId =
+          await db.insert(sbDetailTable, storyboardInfo.storyList![i].toMap());
+      // At first check has an image or not?
+      // then get id from story detail and write an image file to local storage.
+      if (images[i] != null)
+        saveImage = await FileManager.instance
+            .writeImageFiles(uuid, images[i]!, storyDetailId.toString());
+      // Got image path and update into story detail table.
+      if (saveImage != '')
+        await db.update(sbDetailTable, {sbImagePath: saveImage},
+            where: '$sbDetailId = ?', whereArgs: [storyDetailId.toString()]);
+    }
+    // storyboardInfo.storyList!.forEach((element) async {
+    //   element.storyboardId = uuid;
+    //   var storyDetailId = await db.insert(sbDetailTable, element.toMap());
+    //   // At first check has an image or not?
+    //   // then get id from story detail and write an image file to local storage.
+    //   var saveImage = await FileManager.instance
+    //       .writeImageFiles(storyboardId, image, storyDetailId.toString());
+    //   // Got image path and update into story detail table.
+    // });
 
     if (result != 0) _isSuccess = true;
 
@@ -118,7 +140,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db!.query(storyboardTable);
 
     var storyboardProjects = List.generate(maps.length, (i) {
-      print('storyboard id [$i] -> ${maps[i]['id']}');
+      print('get all storyboard id [$i] -> ${maps[i]['id']}');
       return StoryboardModel(
         id: maps[i]['id'].toString(),
         createDate: DateTime.parse(maps[i]['create_date']),
