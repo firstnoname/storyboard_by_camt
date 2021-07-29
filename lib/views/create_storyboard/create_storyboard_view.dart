@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storyboard_camt/blocs/app_manager/app_manager_bloc.dart';
+
 import 'package:storyboard_camt/models/models.dart';
 import 'package:storyboard_camt/views/create_storyboard/bloc/create_storyboard_bloc.dart';
 import 'package:storyboard_camt/widgets/widgets.dart';
@@ -14,8 +14,8 @@ class CreateStoryboardView extends StatefulWidget {
 }
 
 class _CreateStoryboardViewState extends State<CreateStoryboardView> {
-  final _formKey = GlobalKey<FormState>();
   int counter = 1;
+  final _formGK = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +40,17 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                   Container(
                     height: MediaQuery.of(context).size.height,
                     child: Form(
+                      key: _formGK,
                       child: Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
                               onChanged: (value) => _items.projectName = value,
+                              validator: (value) {
+                                if (value == null || value.isEmpty)
+                                  return 'Please enter some text';
+                              },
                             ),
                           ),
                           Expanded(
@@ -76,10 +81,15 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                             bottom: 24,
                             child: RaisedButton(
                               child: Text('Save'),
-                              onPressed: () => context
-                                  .read<CreateStoryboardBloc>()
-                                  .add(StoryboardFormSubmitted(
-                                      widget.onSubmitted)),
+                              onPressed: () {
+                                if (!_formGK.currentState!.validate()) {
+                                  return;
+                                }
+                                context.read<CreateStoryboardBloc>().add(
+                                    StoryboardFormSubmitted(
+                                        widget.onSubmitted));
+                                _formGK.currentState!.save();
+                              },
                             ),
                           ),
                         )

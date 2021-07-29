@@ -47,6 +47,8 @@ class CreateStoryboardBloc
     } else if (event is StoryboardFormSubmitted) {
       // insert into database.
       _storyboardInfo!.createDate = DateTime.now();
+      _storyboardInfo!.userId =
+          appManagerBloc.userAuth.firebaseCurrentUser!.uid;
       var isSuccess = await DatabaseHelper.instance
           .insertStoryboard(storyboardInfo, imagePaths);
 

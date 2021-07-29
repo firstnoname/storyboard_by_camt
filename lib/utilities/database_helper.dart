@@ -18,6 +18,7 @@ class DatabaseHelper {
   static final storyboardId = 'id';
   static final projectName = 'project_name';
   static final createDate = 'create_date';
+  static final userIdFK = 'user_id';
 
   // Store storyboard detail list.
   static final sbDetailTable = 'storyboard_detail_table';
@@ -29,7 +30,6 @@ class DatabaseHelper {
   static final sbSound = 'sound';
   static final sbSoundDuration = 'sound_duration';
   static final sbPlace = 'place';
-
   static final sbForeignKey = 'storyboard_id';
 
   // Store user info.
@@ -67,7 +67,8 @@ class DatabaseHelper {
       CREATE TABLE $storyboardTable (
         $storyboardId TEXT PRIMARY KEY,
         $projectName TEXT NOT NULL,
-        $createDate TEXT NOT NULL
+        $createDate TEXT NOT NULL,
+        $userIdFK TEXT NOT NULL
       )
       ''');
 
@@ -89,7 +90,7 @@ class DatabaseHelper {
     // create user table.
     await db.execute('''
       CREATE TABLE $userTable (
-        $userId INTEGER PRIMARY KEY,
+        $userId TEXT PRIMARY KEY,
         $userName TEXT NOT NULL,
         $userLastname TEXT NOT NULL
       )
@@ -120,24 +121,34 @@ class DatabaseHelper {
         await db.update(sbDetailTable, {sbImagePath: saveImage},
             where: '$sbDetailId = ?', whereArgs: [storyDetailId.toString()]);
     }
-    // storyboardInfo.storyList!.forEach((element) async {
-    //   element.storyboardId = uuid;
-    //   var storyDetailId = await db.insert(sbDetailTable, element.toMap());
-    //   // At first check has an image or not?
-    //   // then get id from story detail and write an image file to local storage.
-    //   var saveImage = await FileManager.instance
-    //       .writeImageFiles(storyboardId, image, storyDetailId.toString());
-    //   // Got image path and update into story detail table.
-    // });
 
     if (result != 0) _isSuccess = true;
 
     return _isSuccess;
   }
 
-  Future<List<StoryboardModel>> getStoryboardInfo() async {
+  Future<bool> updateStoryboard(
+      StoryboardModel storyboardInfo, List<File?> images) async {
     Database? db = (await instance.database);
-    final List<Map<String, dynamic>> maps = await db!.query(storyboardTable);
+
+    var updateStorytable = await db!.update(
+        storyboardTable, storyboardInfo.toMap(),
+        where: '$storyboardId = ?', whereArgs: [storyboardInfo.id]);
+    storyboardInfo.storyList!.forEach((item) async {
+      await db.update(sbDetailTable, item.toMap(),
+          where: '$sbDetailId = ?', whereArgs: [item.id]);
+    });
+
+    if (updateStorytable != 0)
+      return true;
+    else
+      return false;
+  }
+
+  Future<List<StoryboardModel>> getStoryboardInfo(String userId) async {
+    Database? db = (await instance.database);
+    final List<Map<String, dynamic>> maps = await db!
+        .query(storyboardTable, where: '$userIdFK = ?', whereArgs: [userId]);
 
     var storyboardProjects = List.generate(maps.length, (i) {
       print('get all storyboard id [$i] -> ${maps[i]['id']}');

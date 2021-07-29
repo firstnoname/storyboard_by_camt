@@ -10,3 +10,5 @@ class GetDetailsSuccess extends ProjectDetailState {}
 class AddStoryDetailSuccess extends ProjectDetailState {}
 
 class SaveStoryboardSuccess extends ProjectDetailState {}
+
+class SaveStoryboardFailed extends ProjectDetailState {}

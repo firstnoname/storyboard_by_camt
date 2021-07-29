@@ -21,7 +21,7 @@ class ProjectDetailBloc
   }
 
   List<StoryDetail> storyDetails = [];
-  List<File> imagePaths = [];
+  var imagePaths = <File?>[];
 
   @override
   Stream<ProjectDetailState> mapEventToState(
@@ -34,9 +34,19 @@ class ProjectDetailBloc
       yield GetDetailsSuccess();
     } else if (event is AddedStoryDetail) {
       _storyboardInfo.storyList!.add(StoryDetail());
+      imagePaths.add(null);
       yield AddStoryDetailSuccess();
     } else if (event is SavedStoryboard) {
-      yield SaveStoryboardSuccess();
+      var isSuccess = await DatabaseHelper.instance
+          .updateStoryboard(_storyboardInfo, imagePaths);
+
+      if (isSuccess == true) {
+        event.onSubmitted();
+        Navigator.pop(context);
+
+        yield SaveStoryboardSuccess();
+      } else
+        yield SaveStoryboardFailed();
     } else {}
   }
 }

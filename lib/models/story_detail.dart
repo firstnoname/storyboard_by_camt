@@ -10,7 +10,7 @@ class StoryDetail extends BaseObject {
   String? soundSource;
   String? soundDuration;
   String? place;
-
+  String? id;
   String? storyboardId;
 
   StoryDetail(
@@ -22,12 +22,13 @@ class StoryDetail extends BaseObject {
       this.soundDuration,
       this.place,
       this.storyboardId,
-      String? id,
+      this.id,
       Log? log})
       : super(id: id, log: log);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
+
     if (imagePath != null)
       map['image_path'] = imagePath;
     else
@@ -44,7 +45,8 @@ class StoryDetail extends BaseObject {
   }
 
   StoryDetail.fromMap(dynamic map)
-      : imagePath = map['image_path'],
+      : id = map['id'].toString(),
+        imagePath = map['image_path'],
         duration = map['duration'],
         vdoName = map['vdo_name'],
         description = map['description'],

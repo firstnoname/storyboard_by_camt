@@ -7,4 +7,8 @@ class ProjectDetailInitial extends ProjectDetailEvent {}
 
 class AddedStoryDetail extends ProjectDetailEvent {}
 
-class SavedStoryboard extends ProjectDetailEvent {}
+class SavedStoryboard extends ProjectDetailEvent {
+  final void Function() onSubmitted;
+
+  SavedStoryboard(this.onSubmitted);
+}

@@ -33,6 +33,15 @@ class _ProjectListViewState extends State<ProjectListView> {
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.cyan[200],
                 title: Text('Storyboard by CAMT'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.exit_to_app),
+                    color: Colors.white,
+                    onPressed: () => context
+                        .read<ProjectListBloc>()
+                        .add(UserPressedSignOut()),
+                  ),
+                ],
               ),
               body: SafeArea(
                 child: CircularMenu(

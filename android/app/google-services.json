@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "867474444079",
+    "project_id": "storyboard-46e24",
+    "storage_bucket": "storyboard-46e24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867474444079:android:3dd2335a6ee88fe4191bda",
+        "android_client_info": {
+          "package_name": "com.camt.storyboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867474444079-skhcas56j5fq0mg1i06b5d6cvfdgddgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camt.storyboard",
+            "certificate_hash": "834b63f64dd963540f1313203b70900941b7eb2c"
+          }
+        },
+        {
+          "client_id": "867474444079-g7ksp6jmjtmg8nakknaqql9u863iperu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmleMZpkRjD7V8lxCOvea8u1EfaS12_6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867474444079-g7ksp6jmjtmg8nakknaqql9u863iperu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

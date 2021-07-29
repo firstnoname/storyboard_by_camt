@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storyboard_camt/main_view.dart';
-import 'package:storyboard_camt/views/views.dart';
+import '../views.dart';
 
 import 'bloc/login_bloc.dart';
 
@@ -9,6 +8,7 @@ class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
 
   final _formGK = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,6 @@ class LoginView extends StatelessWidget {
                 ),
               ),
             ),
-            // _buildFooter(),
           ],
         ),
       ),
@@ -38,22 +37,22 @@ class LoginView extends StatelessWidget {
   }
 
   Widget _buildMainLayout() {
-    return LayoutBuilder(builder: (context, constrains) {
+    return LayoutBuilder(builder: (ctx, constrains) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Center(child: Text('Login')),
+          Center(child: Text('Logo CAMT')),
           SizedBox(height: 36),
           TextFormField(
             decoration: InputDecoration(
               labelText: 'Email : ',
               suffixIcon: Icon(Icons.email_outlined),
             ),
-            // onSaved: (value) =>
-            //     BlocProvider.of<LoginBloc>(context).email = value,
-            // validator: (value) {
-            //   return InputValidator(context).email(value!);
-            // },
+            onSaved: (value) => BlocProvider.of<LoginBloc>(ctx).email = value,
+            validator: (value) {
+              if (value == null || value.isEmpty)
+                return 'Please enter some text';
+            },
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -61,29 +60,65 @@ class LoginView extends StatelessWidget {
               suffixIcon: Icon(Icons.lock_outline),
             ),
             obscureText: true,
-            // onSaved: (value) =>
-            //     BlocProvider.of<LoginViewBloc>(context).password = value,
-            // validator: (value) {
-            //   return InputValidator(context).password(value!);
-            // },
+            onSaved: (value) =>
+                BlocProvider.of<LoginBloc>(ctx).password = value,
+            validator: (value) {
+              if (value == null || value.isEmpty)
+                return 'Please enter some text';
+            },
           ),
           SizedBox(height: 36),
-          ElevatedButton(
-            child: Text(
-              'Login',
-              //style: Theme.of(ctx).textTheme.button.copyWith(color: Colors.white),
+          GestureDetector(
+            child: Container(
+              constraints: BoxConstraints.expand(height: 50),
+              child: Text("Sign in",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.green[200]),
+              margin: EdgeInsets.only(top: 16),
+              padding: EdgeInsets.all(12),
             ),
-            onPressed: () async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProjectListView(),
-                  ));
-              // if (!_formGK.currentState!.validate()) {
-              //   return;
-              // }
-              // _formGK.currentState!.save();
+            onTap: () async {
+              if (!_formGK.currentState!.validate()) {
+                return;
+              }
+              ctx.read<LoginBloc>().add(LoginEmailPasswordSubmitted());
+              _formGK.currentState!.save();
             },
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 16),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: Divider(color: Colors.green[800])),
+                Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Text("Don’t have an account?",
+                        style: TextStyle(color: Colors.black87))),
+                Expanded(child: Divider(color: Colors.green[800])),
+              ],
+            ),
+          ),
+          GestureDetector(
+            child: Container(
+              constraints: BoxConstraints.expand(height: 50),
+              child: Text("Sign up",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.orange[200]),
+              margin: EdgeInsets.only(top: 12),
+              padding: EdgeInsets.all(12),
+            ),
+            onTap: () => Navigator.push(
+                ctx,
+                MaterialPageRoute(
+                  builder: (context) => UserRegisterView(),
+                )),
           ),
           // _buildLoginWithSocialMedia(),
         ],

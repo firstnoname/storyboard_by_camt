@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../blocs/app_manager/app_manager_bloc.dart';
 import '../views/views.dart';
-
-import 'landing_view.dart';
-import 'main_view.dart';
 
 class StoryboardApp extends StatelessWidget {
   const StoryboardApp({Key? key}) : super(key: key);
@@ -20,6 +18,7 @@ class StoryboardApp extends StatelessWidget {
       ],
       child: GestureDetector(
         child: MaterialApp(
+          builder: EasyLoading.init(),
           title: 'Storyboard by CAMT',
           home: buildHome(),
         ),
@@ -37,9 +36,8 @@ class StoryboardApp extends StatelessWidget {
         Widget view;
         if (state is AppManagerInitial)
           view = LoginView();
-        // view = LandingView();
         else if (state is AppManagerStateAuthenticated)
-          view = MainView();
+          view = ProjectListView();
         else if (state is AppManagerStateUserRegisterFlowStarted)
           view = UserRegisterPolicyAgreement();
         else

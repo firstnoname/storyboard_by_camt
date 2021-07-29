@@ -1,4 +1,4 @@
-package com.example.storyboard_camt
+package com.camt.storyboard
 
 import io.flutter.embedding.android.FlutterActivity
 

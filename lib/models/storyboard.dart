@@ -8,6 +8,7 @@ class StoryboardModel extends BaseObject {
   String? projectName;
   DateTime? createDate;
   User? author;
+  String? userId;
 
   List<StoryDetail>? storyList;
 
@@ -15,6 +16,7 @@ class StoryboardModel extends BaseObject {
       {this.projectName,
       this.createDate,
       this.author,
+      this.userId,
       this.storyList,
       this.id,
       Log? log})
@@ -26,6 +28,7 @@ class StoryboardModel extends BaseObject {
     if (projectName != null) map['project_name'] = projectName;
     if (createDate != null) map['create_date'] = createDate.toString();
     if (author != null) map['author'] = author!.toMap();
+    if (userId != null) map['user_id'] = userId;
     return map;
   }
 
@@ -34,6 +37,7 @@ class StoryboardModel extends BaseObject {
         projectName = map['project_name'],
         createDate = DateTime(map['create_date']),
         author = map['author'],
+        userId = map['user_id'],
         storyList = [],
         super.fromMap(map) {
     if (map['story_list'] != null)

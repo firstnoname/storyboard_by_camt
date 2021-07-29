@@ -5,9 +5,15 @@ import 'models.dart';
 class User extends BaseObject {
   String? firstName;
   String? lastName;
+  String? displayName;
 
-  User({this.firstName, this.lastName, String? id, Log? log})
-      : super(id: id, log: log);
+  User({
+    this.firstName,
+    this.lastName,
+    String? id,
+    Log? log,
+    this.displayName,
+  }) : super(id: id, log: log);
 
   User.fromMap(dynamic map)
       : firstName = map['firstName'],

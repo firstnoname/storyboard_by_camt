@@ -17,6 +17,7 @@ class ProjectDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var projectNameController;
+    final _formGK = GlobalKey<FormState>();
 
     return BlocProvider<ProjectDetailBloc>(
       create: (_) => ProjectDetailBloc(context, storyboardInfo),
@@ -38,6 +39,7 @@ class ProjectDetailView extends StatelessWidget {
                 Container(
                   height: MediaQuery.of(context).size.height,
                   child: Form(
+                    key: _formGK,
                     child: Column(
                       children: [
                         Padding(
@@ -46,6 +48,10 @@ class ProjectDetailView extends StatelessWidget {
                             controller: projectNameController,
                             onChanged: (value) =>
                                 storyboardInfo.projectName = value,
+                            validator: (value) {
+                              if (value == null || value.isEmpty)
+                                return 'Please enter some text';
+                            },
                           ),
                         ),
                         Expanded(
@@ -65,7 +71,15 @@ class ProjectDetailView extends StatelessWidget {
                   bottom: 24,
                   child: RaisedButton(
                     child: Text('Save'),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (!_formGK.currentState!.validate()) {
+                        return;
+                      }
+                      context
+                          .read<ProjectDetailBloc>()
+                          .add(SavedStoryboard(onSubmitted));
+                      _formGK.currentState!.save();
+                    },
                   ),
                 ),
               ],

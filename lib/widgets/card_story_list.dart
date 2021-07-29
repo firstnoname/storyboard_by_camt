@@ -69,6 +69,10 @@ class CardStoryList extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'วินาทีในฉาก'),
                         onChanged: (value) =>
                             storyboardInfo.storyList![index].duration = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
@@ -76,6 +80,10 @@ class CardStoryList extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'คำอธิบาย'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].description = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
@@ -83,6 +91,10 @@ class CardStoryList extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'ภาพเคลื่อนไหว'),
                         onChanged: (value) =>
                             storyboardInfo.storyList![index].vdoName = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
@@ -90,6 +102,10 @@ class CardStoryList extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'ชื่อไฟล์เสียง'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].soundSource = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
@@ -98,6 +114,10 @@ class CardStoryList extends StatelessWidget {
                             InputDecoration(hintText: 'ช่วงเวลาในไฟล์เสียง'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].soundDuration = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                       TextFormField(
@@ -105,6 +125,10 @@ class CardStoryList extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'สถานที่'),
                         onChanged: (value) =>
                             storyboardInfo.storyList![index].place = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty)
+                            return 'Please enter some text';
+                        },
                       ),
                       const SizedBox(width: 8),
                     ],
