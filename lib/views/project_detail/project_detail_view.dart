@@ -71,7 +71,9 @@ class ProjectDetailView extends StatelessWidget {
                             itemBuilder: (context, index) => CardStoryList(
                                 storyboardInfo,
                                 index,
-                                context.read<ProjectDetailBloc>().imagePaths),
+                                context
+                                    .read<ProjectDetailBloc>()
+                                    .imagePaths[index]),
                           ),
                         ),
                       ],

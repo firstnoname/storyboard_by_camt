@@ -8,7 +8,7 @@ abstract class BaseObject {
 
   BaseObject.fromMap(dynamic map, {String? id})
       : this(
-          id: '',
+          id: map['id'] != null ? map['id'].toString() : '',
           // log: map["log"] != null ? Log.fromMap(map["log"]) : null,
         );
 

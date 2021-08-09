@@ -127,17 +127,95 @@ class DatabaseHelper {
     return _isSuccess;
   }
 
-  Future<bool> updateStoryboard(
-      StoryboardModel storyboardInfo, List<File?> images) async {
+  // copy images used to compare with new images.
+  Future<bool> updateStoryboard(StoryboardModel storyboardInfo,
+      List<File?> images, List<File?> copyImages) async {
     Database? db = (await instance.database);
+    String savedImagePath = '';
 
     var updateStorytable = await db!.update(
         storyboardTable, storyboardInfo.toMap(),
         where: '$storyboardId = ?', whereArgs: [storyboardInfo.id]);
-    storyboardInfo.storyList!.forEach((item) async {
-      await db.update(sbDetailTable, item.toMap(),
-          where: '$sbDetailId = ?', whereArgs: [item.id]);
-    });
+
+    for (int i = 0; i < storyboardInfo.storyList!.length; i++) {
+      if (storyboardInfo.storyList![i].id != null) {
+        // check image are changed or not?
+        if (images[i] != copyImages[i]) {
+          // delete image from current directory.
+          final dir = Directory(images[i]!.path);
+          dir.deleteSync(recursive: true);
+          // then add new image and update to table.
+          if (images[i] != null)
+            savedImagePath = await FileManager.instance.writeImageFiles(
+                storyboardInfo.id!, images[i]!, storyboardInfo.id.toString());
+          // Got image path and update into story detail table.
+          if (savedImagePath != '')
+            storyboardInfo.storyList![i].imagePath = savedImagePath;
+          // await db.update(sbDetailTable, {sbImagePath: saveImage},
+          //     where: '$sbDetailId = ?',
+          //     whereArgs: [storyboardInfo.id.toString()]);
+        }
+
+        try {
+          var updateStoryList = await db.update(
+              sbDetailTable, storyboardInfo.storyList![i].toMap(),
+              where: '$sbDetailId = ?',
+              whereArgs: [storyboardInfo.storyList![i].id]);
+        } catch (e) {
+          print(
+              'update story list id ${storyboardInfo.storyList![i].id} -> $e');
+        }
+      } else {
+        // update with no current image.
+        try {
+          storyboardInfo.storyList![i].storyboardId = storyboardInfo.id;
+          var storyDetailId = await db.insert(
+              sbDetailTable, storyboardInfo.storyList![i].toMap());
+          // At first check has an image or not?
+          // then get id from story detail and write an image file to local storage.
+          if (images[i] != null)
+            savedImagePath = await FileManager.instance.writeImageFiles(
+                storyboardInfo.id!, images[i]!, storyDetailId.toString());
+          // Got image path and update into story detail table.
+          if (savedImagePath != '')
+            await db.update(sbDetailTable, {sbImagePath: savedImagePath},
+                where: '$sbDetailId = ?',
+                whereArgs: [storyDetailId.toString()]);
+        } catch (e) {
+          print(
+              'update story list id ${storyboardInfo.storyList![i].id} -> $e');
+        }
+      }
+    }
+
+    // storyboardInfo.storyList!.forEach((item) async {
+    //   if (item.id != null) {
+    //     try {
+    //       var updateStoryList = await db.update(sbDetailTable, item.toMap(),
+    //           where: '$sbDetailId = ?', whereArgs: [item.id]);
+    //     } catch (e) {
+    //       print('update story list id ${item.id} -> $e');
+    //     }
+    //   } else {
+    //     try {
+    //       // var updateStoryList = await db.update(sbDetailTable, item.toMap(),
+    //       //     where: '$sbDetailId = ?', whereArgs: [item.id]);
+    //       var storyDetailId = await db.insert(sbDetailTable, item.toMap());
+    //       // At first check has an image or not?
+    //       // then get id from story detail and write an image file to local storage.
+    //       if (images[i] != null)
+    //         saveImage = await FileManager.instance
+    //             .writeImageFiles(uuid, images[i]!, storyDetailId.toString());
+    //       // Got image path and update into story detail table.
+    //       if (saveImage != '')
+    //         await db.update(sbDetailTable, {sbImagePath: saveImage},
+    //             where: '$sbDetailId = ?',
+    //             whereArgs: [storyDetailId.toString()]);
+    //     } catch (e) {
+    //       print('update story list id ${item.id} -> $e');
+    //     }
+    //   }
+    // });
 
     if (updateStorytable != 0)
       return true;

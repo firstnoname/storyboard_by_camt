@@ -22,6 +22,7 @@ class ProjectDetailBloc
 
   List<StoryDetail> storyDetails = [];
   var imagePaths = <File?>[];
+  var copyImagePaths = <File?>[];
 
   @override
   Stream<ProjectDetailState> mapEventToState(
@@ -31,14 +32,23 @@ class ProjectDetailBloc
       // get story detial from received id.
       storyDetails =
           await DatabaseHelper.instance.getStoryDetailById(_storyboardInfo.id!);
+      if (storyDetails.length != 0) {
+        storyDetails.forEach((item) {
+          imagePaths.add(File(item.imagePath!));
+        });
+        copyImagePaths = imagePaths;
+      }
       yield GetDetailsSuccess();
     } else if (event is AddedStoryDetail) {
       _storyboardInfo.storyList!.add(StoryDetail());
       imagePaths.add(null);
       yield AddStoryDetailSuccess();
     } else if (event is SavedStoryboard) {
-      var isSuccess = await DatabaseHelper.instance
-          .updateStoryboard(_storyboardInfo, imagePaths);
+      var isSuccess = await DatabaseHelper.instance.updateStoryboard(
+        _storyboardInfo,
+        imagePaths,
+        copyImagePaths,
+      );
 
       if (isSuccess == true) {
         event.onSubmitted();

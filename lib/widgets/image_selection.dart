@@ -49,12 +49,13 @@ class _ImageSelectionState extends State<ImageSelection> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
-                      leading: Icon(Icons.photo_library),
-                      title: Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
+                    leading: Icon(Icons.photo_library),
+                    title: Text('Photo Library'),
+                    onTap: () {
+                      _imgFromGallery();
+                      Navigator.of(context).pop();
+                    },
+                  ),
                   ListTile(
                     leading: Icon(Icons.photo_camera),
                     title: Text('Camera'),
@@ -72,7 +73,7 @@ class _ImageSelectionState extends State<ImageSelection> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.currentImage != null) {
+    if (widget.currentImage != null && _image == null) {
       _image = File(widget.currentImage!);
     } else if (_image != null) {
     } else
@@ -85,7 +86,7 @@ class _ImageSelectionState extends State<ImageSelection> {
                 height: double.infinity,
                 child: Image.file(
                   _image!,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fitHeight,
                 ),
               )
             : Container(),

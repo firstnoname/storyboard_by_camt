@@ -63,7 +63,7 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                                   index,
                                   context
                                       .read<CreateStoryboardBloc>()
-                                      .imagePaths),
+                                      .imagePaths[index]),
                             ),
                           ),
                         ],

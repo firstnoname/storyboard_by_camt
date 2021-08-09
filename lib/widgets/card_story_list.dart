@@ -5,7 +5,7 @@ import 'package:storyboard_camt/models/storyboard.dart';
 import 'package:storyboard_camt/widgets/widgets.dart';
 
 class CardStoryList extends StatelessWidget {
-  final List<File?> imagePath;
+  late File? imagePath;
   final int index;
   final StoryboardModel storyboardInfo;
 
@@ -43,14 +43,19 @@ class CardStoryList extends StatelessWidget {
                   ImageSelection(
                     onImageSelected: (file) {
                       storyboardInfo.storyList![index].imagePath = file.path;
-                      imagePath[index] = file;
+                      imagePath = file;
                     },
                     currentImage: storyboardInfo.storyList![index].imagePath,
                   ),
                   Positioned(
                     top: 4,
                     left: 4,
-                    child: Text('${index + 1}'),
+                    child: Text(
+                      '${index + 1}',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
               ),
