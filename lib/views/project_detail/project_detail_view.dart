@@ -38,7 +38,8 @@ class ProjectDetailView extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       // TODO function create pdf view.
-                      final pdfFile = await PdfManager.generatePDF();
+                      final pdfFile =
+                          await PdfManager.generatePDF(storyboardInfo);
                       PdfManager.openFile(pdfFile);
                     },
                     child: Icon(Icons.share))

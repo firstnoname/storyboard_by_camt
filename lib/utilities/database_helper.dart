@@ -151,9 +151,6 @@ class DatabaseHelper {
           // Got image path and update into story detail table.
           if (savedImagePath != '')
             storyboardInfo.storyList![i].imagePath = savedImagePath;
-          // await db.update(sbDetailTable, {sbImagePath: saveImage},
-          //     where: '$sbDetailId = ?',
-          //     whereArgs: [storyboardInfo.id.toString()]);
         }
 
         try {
@@ -187,35 +184,6 @@ class DatabaseHelper {
         }
       }
     }
-
-    // storyboardInfo.storyList!.forEach((item) async {
-    //   if (item.id != null) {
-    //     try {
-    //       var updateStoryList = await db.update(sbDetailTable, item.toMap(),
-    //           where: '$sbDetailId = ?', whereArgs: [item.id]);
-    //     } catch (e) {
-    //       print('update story list id ${item.id} -> $e');
-    //     }
-    //   } else {
-    //     try {
-    //       // var updateStoryList = await db.update(sbDetailTable, item.toMap(),
-    //       //     where: '$sbDetailId = ?', whereArgs: [item.id]);
-    //       var storyDetailId = await db.insert(sbDetailTable, item.toMap());
-    //       // At first check has an image or not?
-    //       // then get id from story detail and write an image file to local storage.
-    //       if (images[i] != null)
-    //         saveImage = await FileManager.instance
-    //             .writeImageFiles(uuid, images[i]!, storyDetailId.toString());
-    //       // Got image path and update into story detail table.
-    //       if (saveImage != '')
-    //         await db.update(sbDetailTable, {sbImagePath: saveImage},
-    //             where: '$sbDetailId = ?',
-    //             whereArgs: [storyDetailId.toString()]);
-    //     } catch (e) {
-    //       print('update story list id ${item.id} -> $e');
-    //     }
-    //   }
-    // });
 
     if (updateStorytable != 0)
       return true;
