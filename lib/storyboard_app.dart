@@ -35,6 +35,7 @@ class StoryboardApp extends StatelessWidget {
       builder: (context, state) {
         Widget view;
         if (state is AppManagerInitial)
+          // Change to splash screen, shouldn't be a LoginView.
           view = LoginView();
         else if (state is AppManagerStateAuthenticated)
           view = ProjectListView();
