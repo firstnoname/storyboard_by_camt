@@ -25,101 +25,97 @@ class _ProjectListViewState extends State<ProjectListView> {
       child: BlocBuilder<ProjectListBloc, ProjectListState>(
         builder: (context, state) {
           var storyboardsInfo = context.read<ProjectListBloc>().storyboardsInfo;
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              backgroundColor: Colors.grey[100],
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.cyan[200],
-                title: Text('Storyboard by CAMT'),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    color: Colors.white,
-                    onPressed: () => context
-                        .read<ProjectListBloc>()
-                        .add(UserPressedSignOut()),
-                  ),
-                ],
-              ),
-              body: SafeArea(
-                child: CircularMenu(
-                  alignment: Alignment.bottomCenter,
-                  startingAngleInRadian: 1.25 * 3.14,
-                  endingAngleInRadian: 1.75 * 3.14,
-                  backgroundWidget: ListView.builder(
-                    itemCount: storyboardsInfo.length,
-                    itemBuilder: (context, index) => Card(
-                      child: InkWell(
-                        splashColor: Colors.blue.withAlpha(30),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  ProjectDetailView(storyboardsInfo[index], () {
-                                context
-                                    .read<ProjectListBloc>()
-                                    .add(ProjectListInitial());
-                              }),
-                            )),
-                        child: ListTile(
-                          title: Text(
-                            '${storyboardsInfo[index].projectName}',
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          leading: Icon(Icons.ac_unit),
-                          trailing: Text(
-                              '${DateFormat('dd-MM-yyyy').format(storyboardsInfo[index].createDate!)}'),
+          return Scaffold(
+            backgroundColor: Colors.grey[100],
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              // backgroundColor: Colors.cyan[200],
+              title: Text('Storyboard by CAMT'),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.exit_to_app),
+                  color: Colors.white,
+                  onPressed: () =>
+                      context.read<ProjectListBloc>().add(UserPressedSignOut()),
+                ),
+              ],
+            ),
+            body: SafeArea(
+              child: CircularMenu(
+                alignment: Alignment.bottomCenter,
+                startingAngleInRadian: 1.25 * 3.14,
+                endingAngleInRadian: 1.75 * 3.14,
+                backgroundWidget: ListView.builder(
+                  itemCount: storyboardsInfo.length,
+                  itemBuilder: (context, index) => Card(
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                ProjectDetailView(storyboardsInfo[index], () {
+                              context
+                                  .read<ProjectListBloc>()
+                                  .add(ProjectListInitial());
+                            }),
+                          )),
+                      child: ListTile(
+                        title: Text(
+                          '${storyboardsInfo[index].projectName}',
+                          overflow: TextOverflow.ellipsis,
                         ),
+                        leading: Icon(Icons.ac_unit),
+                        trailing: Text(
+                            '${DateFormat('dd-MM-yyyy').format(storyboardsInfo[index].createDate!)}'),
                       ),
                     ),
                   ),
-                  curve: Curves.bounceOut,
-                  reverseCurve: Curves.bounceInOut,
-                  toggleButtonColor: Colors.cyan[400],
-                  items: [
-                    CircularMenuItem(
-                        icon: Icons.home,
-                        color: Colors.brown,
-                        onTap: () {
-                          setState(() {
-                            _color = Colors.brown;
-                            _colorName = 'Brown';
-                          });
-                        }),
-                    CircularMenuItem(
-                        icon: Icons.add,
-                        color: Colors.green,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => CreateStoryboardView(() {
-                                      context
-                                          .read<ProjectListBloc>()
-                                          .add(ProjectListInitial());
-                                    })),
-                          );
-                          setState(() {
-                            _color = Colors.green;
-                            _colorName = 'Green';
-                          });
-                        }),
-                    CircularMenuItem(
-                        icon: Icons.delete,
-                        color: Colors.red,
-                        onTap: () {
-                          DatabaseHelper.instance
-                              .deleteStoryboard(storyboardsInfo);
-
-                          setState(() {
-                            _color = Colors.red;
-                            _colorName = 'red';
-                          });
-                        }),
-                  ],
                 ),
+                curve: Curves.bounceOut,
+                reverseCurve: Curves.bounceInOut,
+                toggleButtonColor: Colors.cyan[400],
+                items: [
+                  CircularMenuItem(
+                      icon: Icons.home,
+                      color: Colors.brown,
+                      onTap: () {
+                        setState(() {
+                          _color = Colors.brown;
+                          _colorName = 'Brown';
+                        });
+                      }),
+                  CircularMenuItem(
+                      icon: Icons.add,
+                      color: Colors.green,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => CreateStoryboardView(() {
+                                    context
+                                        .read<ProjectListBloc>()
+                                        .add(ProjectListInitial());
+                                  })),
+                        );
+                        setState(() {
+                          _color = Colors.green;
+                          _colorName = 'Green';
+                        });
+                      }),
+                  CircularMenuItem(
+                      icon: Icons.delete,
+                      color: Colors.red,
+                      onTap: () {
+                        DatabaseHelper.instance
+                            .deleteStoryboard(storyboardsInfo);
+
+                        setState(() {
+                          _color = Colors.red;
+                          _colorName = 'red';
+                        });
+                      }),
+                ],
               ),
             ),
           );

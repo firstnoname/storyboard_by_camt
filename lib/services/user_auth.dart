@@ -50,6 +50,7 @@ class UserAuth {
     var user = _firebaseAuth.currentUser;
     if (user == null) {
       _appManagerBloc.registerState = true;
+      _appManagerBloc.updateCurrentUserProfile(user);
     }
 
     _appManagerBloc.add(AppManagerLoginSuccessed());

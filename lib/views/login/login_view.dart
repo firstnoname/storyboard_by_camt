@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
                     create: (ctx) => LoginBloc(context),
                     child: Form(
                       key: _formGK,
-                      child: _buildMainLayout(),
+                      child: _buildVerificationForm(),
                     ),
                   ),
                 ),
@@ -36,7 +36,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget _buildMainLayout() {
+  Widget _buildVerificationForm() {
     return LayoutBuilder(builder: (ctx, constrains) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

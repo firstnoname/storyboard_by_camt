@@ -21,6 +21,11 @@ class StoryboardApp extends StatelessWidget {
           builder: EasyLoading.init(),
           title: 'Storyboard by CAMT',
           home: buildHome(),
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Color.fromRGBO(255, 192, 105, 1),
+            accentColor: Colors.cyan[600],
+          ),
         ),
       ),
     );

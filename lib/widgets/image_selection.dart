@@ -32,12 +32,14 @@ class _ImageSelectionState extends State<ImageSelection> {
   _imgFromGallery() async {
     PickedFile? image =
         await _picker.getImage(source: ImageSource.gallery, imageQuality: 50);
-    print('image from gallery -> ${image!.path}');
+    print('image from gallery -> ${image?.path}');
 
-    setState(() {
-      _image = File(image.path);
-      widget.onImageSelected!(_image!);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+        widget.onImageSelected!(_image!);
+      });
+    }
   }
 
   void _showPicker(context) {
