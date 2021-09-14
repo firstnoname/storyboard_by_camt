@@ -88,7 +88,7 @@ class _ImageSelectionState extends State<ImageSelection> {
                 height: double.infinity,
                 child: Image.file(
                   _image!,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.fitWidth,
                 ),
               )
             : Container(),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storyboard_camt/models/models.dart';
-import 'package:storyboard_camt/utilities/pdf_manager.dart';
-import 'package:storyboard_camt/views/pdf_creator/pdf_creator_view.dart';
-import 'package:storyboard_camt/views/project_detail/bloc/project_detail_bloc.dart';
-import 'package:storyboard_camt/widgets/widgets.dart';
+
+import '../../models/models.dart';
+import '../../utilities/pdf_manager.dart';
+import '../../views/project_detail/bloc/project_detail_bloc.dart';
+import '../../widgets/widgets.dart';
 
 class ProjectDetailView extends StatelessWidget {
   final StoryboardModel storyboardInfo;
@@ -35,14 +35,17 @@ class ProjectDetailView extends StatelessWidget {
               title: Text('Edit storyboard'),
               centerTitle: true,
               actions: [
-                ElevatedButton(
-                    onPressed: () async {
-                      // TODO function create pdf view.
-                      final pdfFile =
-                          await PdfManager.generatePDF(storyboardInfo);
-                      PdfManager.openFile(pdfFile);
-                    },
-                    child: Icon(Icons.share))
+                IconButton(
+                  onPressed: () async {
+                    final pdfFile =
+                        await PdfManager.generatePDF(storyboardInfo);
+                    PdfManager.openFile(pdfFile);
+                  },
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
             body: Stack(

@@ -18,6 +18,7 @@ class StoryboardApp extends StatelessWidget {
       ],
       child: GestureDetector(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           builder: EasyLoading.init(),
           title: 'Storyboard by CAMT',
           home: buildHome(),

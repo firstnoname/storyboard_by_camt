@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
                     create: (ctx) => LoginBloc(context),
                     child: Form(
                       key: _formGK,
-                      child: _buildVerificationForm(),
+                      child: _buildVerificationForm(context),
                     ),
                   ),
                 ),
@@ -36,12 +36,18 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget _buildVerificationForm() {
+  Widget _buildVerificationForm(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constrains) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Center(child: Text('Logo CAMT')),
+          Center(
+            child: Container(
+              height: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 3,
+              child: Image.asset('assets/images/camt_vertical.png'),
+            ),
+          ),
           SizedBox(height: 36),
           TextFormField(
             decoration: InputDecoration(

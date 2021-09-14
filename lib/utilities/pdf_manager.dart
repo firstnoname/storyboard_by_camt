@@ -35,10 +35,6 @@ class PdfManager {
     final ttf = pw.Font.ttf(font);
     final pdf = pw.Document();
 
-    final image = pw.MemoryImage(
-      File(storyboardData.storyList!.first.imagePath!).readAsBytesSync(),
-    );
-
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -51,67 +47,93 @@ class PdfManager {
               mainAxisAlignment: pw.MainAxisAlignment.start,
               children: storyboardData.storyList!
                   .map(
-                    (e) => pw.Padding(
-                        padding: pw.EdgeInsets.symmetric(vertical: 8),
-                        child: pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    (e) => pw.Table(
+                      border: pw.TableBorder(
+                        top: pw.BorderSide(),
+                        bottom: pw.BorderSide(),
+                        right: pw.BorderSide(),
+                        left: pw.BorderSide(),
+                      ),
+                      children: [
+                        pw.TableRow(
                           children: [
-                            pw.Image(
-                                pw.MemoryImage(
-                                  File(e.imagePath!).readAsBytesSync(),
-                                ),
-                                height: 200,
-                                width: 200),
                             pw.Padding(
                               padding: pw.EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 24),
-                              child: pw.Table(
+                                  vertical: 8, horizontal: 8),
+                              child: pw.Row(
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
-                                  pw.TableRow(
-                                    children: [
-                                      pw.Text(
-                                        ' วินาทีที่ : ${e.duration.toString()}',
-                                        style: pw.TextStyle(font: ttf),
-                                      )
-                                    ],
+                                  pw.Image(
+                                    pw.MemoryImage(
+                                      File(e.imagePath!).readAsBytesSync(),
+                                    ),
+                                    height: 200,
+                                    width: 200,
                                   ),
-                                  pw.TableRow(
-                                    children: [
-                                      pw.Text(
-                                        ' คำอธิบาย : ${e.description.toString()}',
-                                        style: pw.TextStyle(font: ttf),
-                                      )
-                                    ],
+                                  pw.Padding(
+                                    padding: pw.EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 24),
+                                    child: pw.Table(
+                                      border: pw.TableBorder(
+                                        top: pw.BorderSide(),
+                                        bottom: pw.BorderSide(),
+                                        right: pw.BorderSide(),
+                                        left: pw.BorderSide(),
+                                      ),
+                                      children: [
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text(
+                                              ' วินาทีที่ : ${e.duration.toString()}',
+                                              style: pw.TextStyle(font: ttf),
+                                            )
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text(
+                                              ' คำอธิบาย : ${e.description.toString()}',
+                                              style: pw.TextStyle(font: ttf),
+                                            )
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text(
+                                              ' ข้อมูลเสียง : ${e.soundSource.toString()}',
+                                              style: pw.TextStyle(font: ttf),
+                                            )
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text(
+                                              ' วินาทีของเสียง : ${e.soundDuration.toString()}',
+                                              style: pw.TextStyle(font: ttf),
+                                            )
+                                          ],
+                                        ),
+                                        pw.TableRow(
+                                          children: [
+                                            pw.Text(
+                                              ' สถานที่ : ${e.place.toString()}',
+                                              style: pw.TextStyle(font: ttf),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  pw.TableRow(
-                                    children: [
-                                      pw.Text(
-                                        ' ข้อมูลเสียง : ${e.soundSource.toString()}',
-                                        style: pw.TextStyle(font: ttf),
-                                      )
-                                    ],
+                                  pw.Expanded(
+                                    child: pw.Text('Sheet 01'),
                                   ),
-                                  pw.TableRow(
-                                    children: [
-                                      pw.Text(
-                                        ' วินาทีของเสียง : ${e.soundDuration.toString()}',
-                                        style: pw.TextStyle(font: ttf),
-                                      )
-                                    ],
-                                  ),
-                                  pw.TableRow(
-                                    children: [
-                                      pw.Text(
-                                        ' สถานที่ : ${e.place.toString()}',
-                                        style: pw.TextStyle(font: ttf),
-                                      )
-                                    ],
-                                  )
                                 ],
                               ),
                             ),
                           ],
-                        )),
+                        )
+                      ],
+                    ),
                   )
                   .toList(),
             ),

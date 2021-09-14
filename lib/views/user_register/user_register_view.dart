@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storyboard_camt/utilities/ui_feedback.dart';
 
 import 'package:storyboard_camt/views/user_register/bloc/user_register_bloc.dart';
 
