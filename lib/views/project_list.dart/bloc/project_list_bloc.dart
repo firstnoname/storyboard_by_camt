@@ -27,6 +27,14 @@ class ProjectListBloc extends BaseBloc<ProjectListEvent, ProjectListState> {
       storyboardsInfo = await DatabaseHelper.instance
           .getStoryboardInfo(appManagerBloc.userAuth.firebaseCurrentUser!.uid);
       yield GetStoryboardInfoSuccess();
+    } else if (event is ProjectListRemoveSingleProject) {
+      yield ProjectListInprogress();
+      bool result =
+          await DatabaseHelper.instance.deleteStoryboard([event.project]);
+      if (result == true)
+        storyboardsInfo
+            .removeWhere((element) => element.id == event.project.id);
+      yield GetStoryboardInfoSuccess();
     } else if (event is UserPressedSignOut) {
       await appManagerBloc.userAuth.signOut();
       Navigator.pop(context);

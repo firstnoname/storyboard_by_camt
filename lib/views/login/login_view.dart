@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:storyboard_camt/utilities/constants.dart';
 import '../views.dart';
 
 import 'bloc/login_bloc.dart';
@@ -45,7 +46,7 @@ class LoginView extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.width / 3,
               width: MediaQuery.of(context).size.width / 3,
-              child: Image.asset('assets/images/camt_vertical.png'),
+              child: Image.asset(defaultCamtVerticalPNG),
             ),
           ),
           SizedBox(height: 36),

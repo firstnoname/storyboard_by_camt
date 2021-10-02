@@ -213,20 +213,40 @@ class DatabaseHelper {
     Database? db = (await instance.database);
     final List<Map<String, dynamic>> maps = await db!
         .query(sbDetailTable, where: '$sbForeignKey = ?', whereArgs: [id]);
-    maps.forEach((element) {
-      print('storyboard id -> ${element[sbForeignKey]}');
-    });
-    return List.generate(maps.length, (i) => StoryDetail.fromMap(maps[i]));
+
+    List<StoryDetail> result =
+        List.generate(maps.length, (i) => StoryDetail.fromMap(maps[i]));
+
+    for (int i = 0; i < result.length; i++) {
+      result[i].keyIndex = '$i';
+    }
+    return result;
   }
 
   // Delete storyboard and story detail table by storyboard_id and foreign key.
-  Future<void> deleteStoryboard(List<StoryboardModel> storyboardList) async {
+  Future<bool> deleteStoryboard(List<StoryboardModel> storyboardList) async {
+    bool isSuccess = false;
     final db = await instance.database;
-    storyboardList.forEach((element) async {
-      await db!.delete(storyboardTable,
-          where: '$storyboardId = ?', whereArgs: [element.id]);
+    int result = 0;
+
+    for (int i = 0; i < storyboardList.length; i++) {
+      result = await db!.delete(storyboardTable,
+          where: '$storyboardId = ?', whereArgs: [storyboardList[i].id]);
       await db.delete(sbDetailTable,
-          where: '$sbForeignKey = ?', whereArgs: [element.id]);
-    });
+          where: '$sbForeignKey = ?', whereArgs: [storyboardList[i].id]);
+    }
+    if (result != 0) isSuccess = true;
+
+    return isSuccess;
+  }
+
+  // Delete storyboard detail only.
+  Future<bool> deleteStoryDetailAt(String storyDetailId) async {
+    bool isSuccess = false;
+    final db = await instance.database;
+    var value = await db!.delete(sbDetailTable,
+        where: '$sbDetailId = ?', whereArgs: [storyDetailId]);
+    if (value != 0) isSuccess = true;
+    return isSuccess;
   }
 }

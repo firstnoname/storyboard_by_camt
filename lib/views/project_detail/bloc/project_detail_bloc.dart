@@ -40,9 +40,19 @@ class ProjectDetailBloc
       }
       yield GetDetailsSuccess();
     } else if (event is AddedStoryDetail) {
-      _storyboardInfo.storyList!.add(StoryDetail());
+      String storyIndex = _storyboardInfo.storyList == null
+          ? '0'
+          : (_storyboardInfo.storyList!.length + 1).toString();
+      _storyboardInfo.storyList!.add(StoryDetail(keyIndex: storyIndex));
+      // _storyboardInfo.storyList!.add(StoryDetail());
       imagePaths.add(null);
       yield AddStoryDetailSuccess();
+    } else if (event is ProjectDetailRemoveStoryListAt) {
+      // delete story detail in sql.
+      var isSuccess = await DatabaseHelper.instance.deleteStoryDetailAt(
+          _storyboardInfo.storyList![event.index].id.toString());
+      _storyboardInfo.storyList!.removeAt(event.index);
+      yield SaveStoryboardSuccess();
     } else if (event is SavedStoryboard) {
       var isSuccess = await DatabaseHelper.instance.updateStoryboard(
         _storyboardInfo,

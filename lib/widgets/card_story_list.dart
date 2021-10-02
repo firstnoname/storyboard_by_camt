@@ -63,15 +63,18 @@ class CardStoryList extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Container(
+                height: MediaQuery.of(context).size.height * 0.5,
                 color: Colors.blueGrey.shade100,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       TextFormField(
                         controller: durationController,
-                        decoration: InputDecoration(hintText: 'วินาทีในฉาก'),
+                        decoration: InputDecoration(
+                            hintText: 'วินาทีในฉาก', labelText: 'วินาทีในฉาก'),
                         onChanged: (value) =>
                             storyboardInfo.storyList![index].duration = value,
                         validator: (value) {
@@ -82,7 +85,8 @@ class CardStoryList extends StatelessWidget {
                       const SizedBox(width: 8),
                       TextFormField(
                         controller: descController,
-                        decoration: InputDecoration(hintText: 'คำอธิบาย'),
+                        decoration: InputDecoration(
+                            hintText: 'คำอธิบาย', labelText: 'คำอธิบาย'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].description = value,
                         validator: (value) {
@@ -90,21 +94,23 @@ class CardStoryList extends StatelessWidget {
                             return 'Please enter some text';
                         },
                       ),
-                      const SizedBox(width: 8),
-                      TextFormField(
-                        controller: vdoController,
-                        decoration: InputDecoration(hintText: 'ภาพเคลื่อนไหว'),
-                        onChanged: (value) =>
-                            storyboardInfo.storyList![index].vdoName = value,
-                        validator: (value) {
-                          if (value == null || value.isEmpty)
-                            return 'Please enter some text';
-                        },
-                      ),
+                      // const SizedBox(width: 8),
+                      // TextFormField(
+                      //   controller: vdoController,
+                      //   decoration: InputDecoration(hintText: 'ภาพเคลื่อนไหว'),
+                      //   onChanged: (value) =>
+                      //       storyboardInfo.storyList![index].vdoName = value,
+                      //   validator: (value) {
+                      //     if (value == null || value.isEmpty)
+                      //       return 'Please enter some text';
+                      //   },
+                      // ),
                       const SizedBox(width: 8),
                       TextFormField(
                         controller: soundController,
-                        decoration: InputDecoration(hintText: 'ชื่อไฟล์เสียง'),
+                        decoration: InputDecoration(
+                            hintText: 'ชื่อไฟล์เสียง',
+                            labelText: 'ชื่อไฟล์เสียง'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].soundSource = value,
                         validator: (value) {
@@ -115,8 +121,9 @@ class CardStoryList extends StatelessWidget {
                       const SizedBox(width: 8),
                       TextFormField(
                         controller: soundSourceController,
-                        decoration:
-                            InputDecoration(hintText: 'ช่วงเวลาในไฟล์เสียง'),
+                        decoration: InputDecoration(
+                            hintText: 'ช่วงเวลาในไฟล์เสียง',
+                            labelText: 'ช่วงเวลาในไฟล์เสียง'),
                         onChanged: (value) => storyboardInfo
                             .storyList![index].soundDuration = value,
                         validator: (value) {
@@ -127,7 +134,8 @@ class CardStoryList extends StatelessWidget {
                       const SizedBox(width: 8),
                       TextFormField(
                         controller: placeController,
-                        decoration: InputDecoration(hintText: 'สถานที่'),
+                        decoration: InputDecoration(
+                            hintText: 'สถานที่', labelText: 'สถานที่'),
                         onChanged: (value) =>
                             storyboardInfo.storyList![index].place = value,
                         validator: (value) {

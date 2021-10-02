@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storyboard_camt/utilities/ui_feedback.dart';
 
 import 'package:storyboard_camt/views/user_register/bloc/user_register_bloc.dart';
 
@@ -13,7 +12,8 @@ class UserRegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign up", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        title: Text("Sign up"),
         backgroundColor: Colors.orange[200],
       ),
       body: BlocProvider<UserRegisterBloc>(

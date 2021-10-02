@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,8 +19,9 @@ class StoryboardApp extends StatelessWidget {
       ],
       child: GestureDetector(
         child: MaterialApp(
+          locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
-          builder: EasyLoading.init(),
+          builder: EasyLoading.init(builder: DevicePreview.appBuilder),
           title: 'Storyboard by CAMT',
           home: buildHome(),
           theme: ThemeData(

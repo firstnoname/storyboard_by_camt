@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:storyboard_camt/models/models.dart';
+import 'package:storyboard_camt/utilities/constants.dart';
 import 'package:storyboard_camt/views/create_storyboard/bloc/create_storyboard_bloc.dart';
 import 'package:storyboard_camt/widgets/widgets.dart';
 
@@ -31,8 +32,14 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                 context.read<CreateStoryboardBloc>().storyboardInfo;
             return Scaffold(
               appBar: AppBar(
-                title: Text('Create storyboard'),
+                title: Text('สร้าง Storyboard'),
                 centerTitle: true,
+                actions: [
+                  Image.asset(
+                    defaultCamtVerticalPNG,
+                    scale: 20,
+                  )
+                ],
               ),
               body: Stack(
                 alignment: Alignment.topCenter,
@@ -46,6 +53,8 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              decoration:
+                                  InputDecoration(hintText: 'ชื่อโปรเจค'),
                               onChanged: (value) => _items.projectName = value,
                               validator: (value) {
                                 if (value == null || value.isEmpty)
@@ -56,14 +65,28 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                           Expanded(
                             child: ListView.builder(
                               itemCount: _items.storyList!.length,
-                              itemBuilder: (context, index) => CardStoryList(
+                              itemBuilder: (context, index) => Dismissible(
+                                key: Key(_items.storyList![index].id!),
+                                onDismissed: (direction) {
+                                  context.read<CreateStoryboardBloc>().add(
+                                      CreateStoryboardRemoveStoryListAt(index));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'view -> ${_items.storyList?.length}'),
+                                    ),
+                                  );
+                                },
+                                child: CardStoryList(
                                   context
                                       .read<CreateStoryboardBloc>()
                                       .storyboardInfo,
                                   index,
                                   context
                                       .read<CreateStoryboardBloc>()
-                                      .imagePaths[index]),
+                                      .imagePaths[index],
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -78,8 +101,11 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                       ? Visibility(
                           visible: !keyboardIsOpen,
                           child: Positioned(
-                            bottom: 24,
-                            child: RaisedButton(
+                            bottom: 8,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color.fromRGBO(255, 192, 105, 1))),
                               child: Text('Save'),
                               onPressed: () {
                                 if (!_formGK.currentState!.validate()) {

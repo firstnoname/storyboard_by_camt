@@ -6,3 +6,9 @@ abstract class ProjectListEvent {}
 class ProjectListInitial extends ProjectListEvent {}
 
 class UserPressedSignOut extends ProjectListEvent {}
+
+class ProjectListRemoveSingleProject extends ProjectListEvent {
+  final StoryboardModel project;
+
+  ProjectListRemoveSingleProject(this.project);
+}

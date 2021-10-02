@@ -12,6 +12,7 @@ class StoryDetail extends BaseObject {
   String? place;
   String? id;
   String? storyboardId;
+  String? keyIndex;
 
   StoryDetail(
       {this.imagePath,
@@ -23,6 +24,7 @@ class StoryDetail extends BaseObject {
       this.place,
       this.storyboardId,
       this.id,
+      this.keyIndex,
       Log? log})
       : super(id: id, log: log);
 
@@ -54,5 +56,6 @@ class StoryDetail extends BaseObject {
         soundDuration = map['sound_duration'],
         place = map['place'],
         storyboardId = map['storyboard_id'].toString(),
+        keyIndex = map['key_index'].toString(),
         super.fromMap(map);
 }

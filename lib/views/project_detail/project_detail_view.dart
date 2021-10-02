@@ -32,7 +32,7 @@ class ProjectDetailView extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Edit storyboard'),
+              title: Text('แก้ไขข้อมูล'),
               centerTitle: true,
               actions: [
                 IconButton(
@@ -72,12 +72,26 @@ class ProjectDetailView extends StatelessWidget {
                         Expanded(
                           child: ListView.builder(
                             itemCount: storyboardInfo.storyList!.length,
-                            itemBuilder: (context, index) => CardStoryList(
-                                storyboardInfo,
-                                index,
+                            itemBuilder: (context, index) => Dismissible(
+                              key: Key(
+                                  storyboardInfo.storyList![index].keyIndex!),
+                              onDismissed: (direction) {
                                 context
                                     .read<ProjectDetailBloc>()
-                                    .imagePaths[index]),
+                                    .add(ProjectDetailRemoveStoryListAt(index));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('ลบข้อมูลเรียบร้อย'),
+                                  ),
+                                );
+                              },
+                              child: CardStoryList(
+                                  storyboardInfo,
+                                  index,
+                                  context
+                                      .read<ProjectDetailBloc>()
+                                      .imagePaths[index]),
+                            ),
                           ),
                         ),
                       ],
@@ -85,8 +99,11 @@ class ProjectDetailView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 24,
-                  child: RaisedButton(
+                  bottom: 8,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(255, 192, 105, 1))),
                     child: Text('Save'),
                     onPressed: () {
                       if (!_formGK.currentState!.validate()) {

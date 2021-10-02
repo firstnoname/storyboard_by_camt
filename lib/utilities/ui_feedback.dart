@@ -46,4 +46,50 @@ class UIFeedback {
       },
     );
   }
+
+  showConfirmDialog2(BuildContext context, String title, String content) {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('$title'),
+        content: Text('$content'),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            onPressed: () => Navigator.pop(context),
+            child: Text('ยกเลิก'),
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('ยืนยัน'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  showConfirmDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('title'),
+        content: Text('content'),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('ยกเลิก'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('ยืนยัน'),
+          ),
+        ],
+      ),
+    );
+  }
 }

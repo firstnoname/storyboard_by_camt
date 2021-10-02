@@ -59,14 +59,20 @@ class CreateStoryboardBloc
       } else
         yield CreateStoryboardFailure();
     } else if (event is StoryboardItemAdded) {
+      String storyIndex = _storyboardInfo!.storyList == null
+          ? '0'
+          : (_storyboardInfo!.storyList!.length + 1).toString();
       textTimeControllers.add(TextEditingController());
       textDescriptionControllers.add(TextEditingController());
       textVdoControllers.add(TextEditingController());
       textSoundControllers.add(TextEditingController());
       textSoundDurationControllers.add(TextEditingController());
       textPlaceControllers.add(TextEditingController());
-      _storyboardInfo!.storyList!.add(StoryDetail());
+      _storyboardInfo!.storyList!.add(StoryDetail(id: storyIndex));
       imagePaths.add(null);
+      yield CreateStorybaordAddItemSuccess();
+    } else if (event is CreateStoryboardRemoveStoryListAt) {
+      _storyboardInfo!.storyList!.removeAt(event.index);
       yield CreateStorybaordAddItemSuccess();
     }
   }

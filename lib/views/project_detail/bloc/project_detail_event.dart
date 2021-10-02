@@ -12,3 +12,9 @@ class SavedStoryboard extends ProjectDetailEvent {
 
   SavedStoryboard(this.onSubmitted);
 }
+
+class ProjectDetailRemoveStoryListAt extends ProjectDetailEvent {
+  final index;
+
+  ProjectDetailRemoveStoryListAt(this.index);
+}

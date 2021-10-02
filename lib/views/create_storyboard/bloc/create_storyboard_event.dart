@@ -12,3 +12,9 @@ class StoryboardFormSubmitted extends CreateStoryboardEvent {
 }
 
 class StoryboardItemAdded extends CreateStoryboardEvent {}
+
+class CreateStoryboardRemoveStoryListAt extends CreateStoryboardEvent {
+  final index;
+
+  CreateStoryboardRemoveStoryListAt(this.index);
+}
