@@ -1,0 +1,7 @@
+#Fri Oct 08 22:57:17 ICT 2021
+base.0=C\:\\Users\\iFirst-Asus\\Documents\\Flutter\\Projects\\storyboard_by_camt\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.1=classes2.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\Users\\iFirst-Asus\\Documents\\Flutter\\Projects\\storyboard_by_camt\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex

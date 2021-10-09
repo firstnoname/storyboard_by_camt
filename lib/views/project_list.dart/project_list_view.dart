@@ -37,12 +37,6 @@ class _ProjectListViewState extends State<ProjectListView> {
                   defaultCamtVerticalPNG,
                   scale: 20,
                 )
-                // IconButton(
-                //   icon: Icon(Icons.exit_to_app),
-                //   color: Colors.white,
-                //   onPressed: () =>
-                //       context.read<ProjectListBloc>().add(UserPressedSignOut()),
-                // ),
               ],
             ),
             body: SafeArea(
@@ -151,17 +145,48 @@ class _ProjectListViewState extends State<ProjectListView> {
                         });
                       }),
                   CircularMenuItem(
-                      icon: Icons.delete,
-                      color: Colors.red,
-                      onTap: () {
-                        DatabaseHelper.instance
-                            .deleteStoryboard(storyboardsInfo);
+                    icon: Icons.delete,
+                    color: Colors.red,
+                    // onTap: () {
+                    //   DatabaseHelper.instance.deleteStoryboard(storyboardsInfo);
 
-                        setState(() {
-                          _color = Colors.red;
-                          _colorName = 'red';
-                        });
-                      }),
+                    //   setState(() {
+                    //     _color = Colors.red;
+                    //     _colorName = 'red';
+                    //   });
+                    // },
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text('แจ้งเตือน'),
+                        content: Text('คุณต้องการลบข้อมูลทั้งหมดหรือไม่ ?'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.green)),
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('ยกเลิก'),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            onPressed: () {
+                              DatabaseHelper.instance
+                                  .deleteStoryboard(storyboardsInfo);
+
+                              context
+                                  .read<ProjectListBloc>()
+                                  .add(ProjectListInitial());
+                              Navigator.pop(context);
+                            },
+                            child: Text('ยืนยัน'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

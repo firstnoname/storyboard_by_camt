@@ -36,11 +36,14 @@ class StoryDetail extends BaseObject {
     else
       map['image_path'] = '';
     if (duration != null) map['duration'] = duration;
-    if (vdoName != null) map['vdo_name'] = vdoName;
-    if (description != null) map['description'] = description;
-    if (soundSource != null) map['sound'] = soundSource;
-    if (soundDuration != null) map['sound_duration'] = soundDuration;
-    if (place != null) map['place'] = place;
+    if (vdoName != null)
+      map['vdo_name'] = vdoName;
+    else
+      map['vdo_name'] = '';
+    if (description != null) map['description'] = description ?? '';
+    if (soundSource != null) map['sound'] = soundSource ?? '';
+    if (soundDuration != null) map['sound_duration'] = soundDuration ?? '';
+    if (place != null) map['place'] = place ?? '';
     if (storyboardId != null) map['storyboard_id'] = storyboardId;
 
     return map;

@@ -24,6 +24,7 @@ class CardStoryList extends StatelessWidget {
         text: storyboardInfo.storyList![index].description);
     var vdoController =
         TextEditingController(text: storyboardInfo.storyList![index].vdoName);
+    vdoController.text = '';
     var soundController = TextEditingController(
         text: storyboardInfo.storyList![index].soundDuration);
     var soundSourceController = TextEditingController(

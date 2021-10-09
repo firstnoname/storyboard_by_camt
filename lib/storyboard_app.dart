@@ -7,7 +7,9 @@ import '../blocs/app_manager/app_manager_bloc.dart';
 import '../views/views.dart';
 
 class StoryboardApp extends StatelessWidget {
-  const StoryboardApp({Key? key}) : super(key: key);
+  StoryboardApp({Key? key}) : super(key: key);
+
+  final ThemeData theme = ThemeData();
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +26,18 @@ class StoryboardApp extends StatelessWidget {
           builder: EasyLoading.init(builder: DevicePreview.appBuilder),
           title: 'Storyboard by CAMT',
           home: buildHome(),
-          theme: ThemeData(
-            brightness: Brightness.light,
-            primaryColor: Color.fromRGBO(255, 192, 105, 1),
-            accentColor: Colors.cyan[600],
+          // theme: ThemeData(
+          //   brightness: Brightness.light,
+          //   primaryColor: Color.fromRGBO(255, 192, 105, 1),
+          //   accentColor: Colors.cyan[600],
+          // ),
+          theme: theme.copyWith(
+            colorScheme: theme.colorScheme.copyWith(
+              primary: Color.fromRGBO(255, 192, 105, 1),
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Color.fromRGBO(255, 192, 105, 1),
+            ),
           ),
         ),
       ),

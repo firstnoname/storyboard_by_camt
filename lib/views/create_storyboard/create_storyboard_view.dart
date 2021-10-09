@@ -106,7 +106,7 @@ class _CreateStoryboardViewState extends State<CreateStoryboardView> {
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color.fromRGBO(255, 192, 105, 1))),
-                              child: Text('Save'),
+                              child: Text('บันทึก'),
                               onPressed: () {
                                 if (!_formGK.currentState!.validate()) {
                                   return;

@@ -53,11 +53,16 @@ class CreateStoryboardBloc
           .insertStoryboard(storyboardInfo, imagePaths);
 
       if (isSuccess == true) {
+        await uiFeedback.showOKDialog(
+            context, 'แจ้งเตือน', 'บันทึกข้อมูลสำเร็จ');
         event.onSubmitted();
         Navigator.pop(context);
         yield CreateStoryboardSubmitSuccess();
-      } else
+      } else {
+        await uiFeedback.showOKDialog(context, 'แจ้งเตือน',
+            'บันทึกข้อมูลไม่สำเร็จ, result -> $isSuccess');
         yield CreateStoryboardFailure();
+      }
     } else if (event is StoryboardItemAdded) {
       String storyIndex = _storyboardInfo!.storyList == null
           ? '0'
